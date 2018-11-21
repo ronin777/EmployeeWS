@@ -6,10 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.frvazquez.apps.entity.Employee;
-
 
 /**
  * 
@@ -21,29 +23,26 @@ import com.frvazquez.apps.entity.Employee;
 @Transactional
 public class EmployeeDaoImpl implements EmployeeDao {
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	//Inicializacion Log
+	Logger log = Logger.getLogger(EmployeeDaoImpl.class);
+
+	@Autowired
+	private SessionFactory sessionFactory;
 	
+
 	@Override
 	public List<Employee> getAllEmployee() {
-		String query = "FROM employee as emp ORDER BY emp.empName";
-		return (List<Employee>) entityManager.createQuery(query).getResultList();
+		return (List<Employee>) sessionFactory.getCurrentSession().createCriteria(Employee.class);
 	}
 
 	@Override
-	public Employee addEmployee(Employee employee) {
-		entityManager.persist(employee);
-		return employee;
+	public Boolean addEmployee(Employee employee) {
+		boolean flagComplete = false;
+		sessionFactory.getCurrentSession().save(employee);
+		flagComplete = true;
+		log.info("Registro guardado : "+flagComplete);
+		return flagComplete;
 	}
 
-	@Override
-	public void deleteEmployee(Employee employee) {
-		entityManager.remove(employee);
-	}
-
-	@Override
-	public Employee getByIdEmployee(Long id) {
-		return entityManager.find(Employee.class, id);
-	}
 
 }

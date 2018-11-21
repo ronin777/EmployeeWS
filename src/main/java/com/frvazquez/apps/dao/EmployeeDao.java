@@ -17,10 +17,6 @@ public interface EmployeeDao {
 
 	public List<Employee> getAllEmployee();
 
-	public Employee addEmployee(Employee employee);
-
-	public void deleteEmployee(Employee employee);
-
-	public Employee getByIdEmployee(Long id);
+	public Boolean addEmployee(Employee employee);
 	
 }
