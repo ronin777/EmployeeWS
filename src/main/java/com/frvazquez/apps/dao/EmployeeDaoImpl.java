@@ -2,12 +2,12 @@ package com.frvazquez.apps.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -42,6 +42,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		flagComplete = true;
 		log.info("Registro guardado : "+flagComplete);
 		return flagComplete;
+	}
+
+	@Override
+	public List<Employee> getListEmployeeXName(String name) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Employee.class);
+		criteria.add(Restrictions.like("empName", "%"+name));
+		return criteria.list();
 	}
 
 

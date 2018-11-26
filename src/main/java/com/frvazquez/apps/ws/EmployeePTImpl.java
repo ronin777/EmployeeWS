@@ -59,12 +59,31 @@ public class EmployeePTImpl extends SpringBeanAutowiringSupport {
 
 			String statusAddEmployee = rspaAddEmployee == true ? "OK" : "NOT";
 			employeeResponse.setEmpstatusnewemployee(statusAddEmployee);
-			
+
 		} else if (action.equals("1")) {
 
 			List<Employee> listEmployee = new ArrayList<Employee>();
 
 			listEmployee = employeeService.getAllEmployee();
+			
+			for (Employee emp : listEmployee) {
+				EmployeeSchema employee = new EmployeeSchema();
+				employee.setEmpalias(emp.getEmpAlias());
+				employee.setEmpdni(emp.getEmpDni());
+				employee.setEmpemail(emp.getEmpEmail());
+				employee.setEmpname(emp.getEmpName());
+				employee.setEmppassword(emp.getEmpPassword());
+
+				employeeResponse.getEmployees().add(employee);
+
+			}
+
+		} else if (action.equals("b")) {
+
+			List<Employee> listEmployee = new ArrayList<Employee>();
+
+			listEmployee = employeeService.getListEmployeeXName(employeeRequest.getEmpname());
+
 			for (Employee emp : listEmployee) {
 				EmployeeSchema employee = new EmployeeSchema();
 				employee.setEmpalias(emp.getEmpAlias());

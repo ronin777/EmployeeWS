@@ -19,4 +19,5 @@ public interface EmployeeDao {
 
 	public Boolean addEmployee(Employee employee);
 	
+	public List<Employee> getListEmployeeXName(String name);
 }

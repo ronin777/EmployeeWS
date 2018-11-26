@@ -9,5 +9,7 @@ public interface EmployeeService {
 	public List<Employee> getAllEmployee();
 
 	public Boolean addEmployee(Employee employee);
-	
+
+	public List<Employee> getListEmployeeXName(String name);
+
 }

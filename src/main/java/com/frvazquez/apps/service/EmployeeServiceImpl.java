@@ -33,4 +33,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.addEmployee(employee);
 	}
 
+	@Override
+	public List<Employee> getListEmployeeXName(String name) {
+		return employeeDao.getListEmployeeXName(name);
+	}
+
 }
