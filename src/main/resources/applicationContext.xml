@@ -18,7 +18,7 @@
 	<context:property-placeholder
 		location="classpath:jdbc.properties" />
 
-	<jee:jndi-lookup id="dsXE" jndi-name="jdbc/soadev" />
+	<jee:jndi-lookup id="dsXE" jndi-name="jdbc/devsoa" />
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

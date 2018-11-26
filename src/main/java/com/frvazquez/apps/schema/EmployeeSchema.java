@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Employee", propOrder = { "empid", "empname", "empalias", "emppassword", "empdni", "empemail" })
-public class Employee {
+public class EmployeeSchema {
 
     @XmlElement(required = true)
     protected BigInteger empid;

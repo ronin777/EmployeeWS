@@ -63,11 +63,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Employee }
+     * Create an instance of {@link EmployeeSchema }
      *
      */
-    public Employee createEmployee() {
-        return new Employee();
+    public EmployeeSchema createEmployee() {
+        return new EmployeeSchema();
     }
 
     /**

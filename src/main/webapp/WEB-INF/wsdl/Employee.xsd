@@ -16,10 +16,10 @@
   <xsd:complexType name="employeeResponse">
     <xsd:sequence>
       <xsd:element name="empstatusnewemployee" type="xsd:string"/>
-      <xsd:element name="employees" type="Employee" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="employees" type="EmployeeSchema" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:complexType name="Employee">
+  <xsd:complexType name="EmployeeSchema">
     <xsd:sequence>
       <xsd:element name="empid" type="xsd:integer"/>
       <xsd:element name="empname" type="xsd:string"/>

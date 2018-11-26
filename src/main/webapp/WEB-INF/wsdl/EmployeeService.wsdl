@@ -38,7 +38,7 @@
   </binding>
   <service name="EmployeeServices">
     <port name="EmployeePort" binding="tns:EmployeeSOAP11Binding">
-      <soap:address location="http://192.168.0.145:7101/WS_Employee/EmployeePTImpl?WSDL" />
+      <soap:address location="http://192.168.1.72:7101/WS_Employee/EmployeePTImpl?WSDL" />
     </port>
   </service>
 </definitions>

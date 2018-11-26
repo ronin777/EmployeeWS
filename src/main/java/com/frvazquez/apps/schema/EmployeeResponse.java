@@ -36,7 +36,7 @@ public class EmployeeResponse {
 
     @XmlElement(required = true)
     protected String empstatusnewemployee;
-    protected List<Employee> employees;
+    protected List<EmployeeSchema> employees;
 
     /**
      * Gets the value of the empstatusnewemployee property.
@@ -80,13 +80,13 @@ public class EmployeeResponse {
      *
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Employee }
+     * {@link EmployeeSchema }
      *
      *
      */
-    public List<Employee> getEmployees() {
+    public List<EmployeeSchema> getEmployees() {
         if (employees == null) {
-            employees = new ArrayList<Employee>();
+            employees = new ArrayList<EmployeeSchema>();
         }
         return this.employees;
     }
