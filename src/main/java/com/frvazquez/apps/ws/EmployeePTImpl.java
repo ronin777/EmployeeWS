@@ -2,13 +2,17 @@ package com.frvazquez.apps.ws;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,9 @@ public class EmployeePTImpl extends SpringBeanAutowiringSupport {
 
 	Logger log = Logger.getLogger(EmployeePTImpl.class);
 
+	@Resource
+	WebServiceContext wsctx;
+
 	@Autowired
 	@Qualifier("employeeService")
 	private EmployeeService employeeService;
@@ -45,59 +52,86 @@ public class EmployeePTImpl extends SpringBeanAutowiringSupport {
 		EmployeeResponse employeeResponse = new EmployeeResponse();
 		String action = employeeRequest.getAction();
 
-		if (action.equals("a")) {
+		if (isAuthentication()) {
 
-			Employee employee = new Employee();
+			if (action.equals("a")) {
 
-			employee.setEmpAlias(employeeRequest.getEmpalias());
-			employee.setEmpDni(employeeRequest.getEmpdni());
-			employee.setEmpEmail(employeeRequest.getEmpemail());
-			employee.setEmpName(employeeRequest.getEmpname());
-			employee.setEmpPassword(employeeRequest.getEmppassword());
+				Employee employee = new Employee();
 
-			boolean rspaAddEmployee = employeeService.addEmployee(employee);
+				employee.setEmpAlias(employeeRequest.getEmpalias());
+				employee.setEmpDni(employeeRequest.getEmpdni());
+				employee.setEmpEmail(employeeRequest.getEmpemail());
+				employee.setEmpName(employeeRequest.getEmpname());
+				employee.setEmpPassword(employeeRequest.getEmppassword());
 
-			String statusAddEmployee = rspaAddEmployee == true ? "OK" : "NOT";
-			employeeResponse.setEmpstatusnewemployee(statusAddEmployee);
+				boolean rspaAddEmployee = employeeService.addEmployee(employee);
 
-		} else if (action.equals("1")) {
+				String statusAddEmployee = rspaAddEmployee == true ? "OK" : "NOT";
+				employeeResponse.setEmpstatusnewemployee(statusAddEmployee);
 
-			List<Employee> listEmployee = new ArrayList<Employee>();
+			} else if (action.equals("1")) {
 
-			listEmployee = employeeService.getAllEmployee();
-			
-			for (Employee emp : listEmployee) {
-				EmployeeSchema employee = new EmployeeSchema();
-				employee.setEmpalias(emp.getEmpAlias());
-				employee.setEmpdni(emp.getEmpDni());
-				employee.setEmpemail(emp.getEmpEmail());
-				employee.setEmpname(emp.getEmpName());
-				employee.setEmppassword(emp.getEmpPassword());
+				List<Employee> listEmployee = new ArrayList<Employee>();
 
-				employeeResponse.getEmployees().add(employee);
+				listEmployee = employeeService.getAllEmployee();
+
+				for (Employee emp : listEmployee) {
+					EmployeeSchema employee = new EmployeeSchema();
+					employee.setEmpalias(emp.getEmpAlias());
+					employee.setEmpdni(emp.getEmpDni());
+					employee.setEmpemail(emp.getEmpEmail());
+					employee.setEmpname(emp.getEmpName());
+					employee.setEmppassword(emp.getEmpPassword());
+
+					employeeResponse.getEmployees().add(employee);
+
+				}
+
+			} else if (action.equals("b")) {
+
+				List<Employee> listEmployee = new ArrayList<Employee>();
+
+				listEmployee = employeeService.getListEmployeeXName(employeeRequest.getEmpname());
+
+				for (Employee emp : listEmployee) {
+					EmployeeSchema employee = new EmployeeSchema();
+					employee.setEmpalias(emp.getEmpAlias());
+					employee.setEmpdni(emp.getEmpDni());
+					employee.setEmpemail(emp.getEmpEmail());
+					employee.setEmpname(emp.getEmpName());
+					employee.setEmppassword(emp.getEmpPassword());
+
+					employeeResponse.getEmployees().add(employee);
+
+				}
 
 			}
-
-		} else if (action.equals("b")) {
-
-			List<Employee> listEmployee = new ArrayList<Employee>();
-
-			listEmployee = employeeService.getListEmployeeXName(employeeRequest.getEmpname());
-
-			for (Employee emp : listEmployee) {
-				EmployeeSchema employee = new EmployeeSchema();
-				employee.setEmpalias(emp.getEmpAlias());
-				employee.setEmpdni(emp.getEmpDni());
-				employee.setEmpemail(emp.getEmpEmail());
-				employee.setEmpname(emp.getEmpName());
-				employee.setEmppassword(emp.getEmpPassword());
-
-				employeeResponse.getEmployees().add(employee);
-
-			}
-
 		}
 
 		return employeeResponse;
+	}
+
+	public boolean isAuthentication() {
+		MessageContext mctx = wsctx.getMessageContext();
+		Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
+		List userList = (List) http_headers.get("Username");
+		List passList = (List) http_headers.get("Password");
+
+		String username = "";
+		String password = "";
+		if (userList != null) {
+			username = userList.get(0).toString();
+		}
+
+		if (passList != null) {
+			password = passList.get(0).toString();
+		}
+
+		if (username.equals("frvazquez") && password.equals("54321")) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }

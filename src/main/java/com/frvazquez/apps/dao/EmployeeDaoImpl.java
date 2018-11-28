@@ -30,9 +30,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	private SessionFactory sessionFactory;
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> getAllEmployee() {
-		return (List<Employee>) sessionFactory.getCurrentSession().createCriteria(Employee.class);
+		return (List<Employee>) sessionFactory.getCurrentSession().createCriteria(Employee.class).list();
 	}
 
 	@Override
@@ -44,11 +45,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		return flagComplete;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> getListEmployeeXName(String name) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Employee.class);
 		criteria.add(Restrictions.like("empName", "%"+name));
-		return criteria.list();
+		return (List<Employee>) criteria.list();
 	}
 
 
